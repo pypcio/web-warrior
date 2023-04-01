@@ -9,12 +9,22 @@
  */
 module.exports = {
   plugins: [
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`, // Needed for dynamic images
     "gatsby-transformer-remark",
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `notes`,
         path: `${__dirname}/src/pages/notes/`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `images`,
+        path: `${__dirname}/src/pages/images/`,
       },
     },
   ],
