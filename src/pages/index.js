@@ -17,7 +17,7 @@ export default function Home() {
         </div>
         <img
           src="/banner.png"
-          class="img-fluid rounded-top"
+          className="img-fluid rounded-top"
           alt="side banner"
           style={{ maxWidth: "100%" }}
         />
