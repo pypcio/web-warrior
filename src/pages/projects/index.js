@@ -2,13 +2,15 @@ import React from "react";
 import Layout from "../components/Layout";
 import * as styles from "../styles/projects.module.css";
 import { graphql, Link } from "gatsby";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 
 export default function Project({ data }) {
   console.log(data);
   const projects = data.projects.nodes;
   const contact = data.contact.siteMetadata.contact;
-  console.log(projects);
-  console.log(contact);
+  console.log("data: ", projects);
+  // console.log("image: ", image);
+  // console.log(contact);
 
   return (
     <Layout>
@@ -16,9 +18,15 @@ export default function Project({ data }) {
         <h2>Portfolio</h2>
         <h3>Projects & Websites i've created</h3>
         <div className={styles.projects}>
-          {projects.map((n) => (
+          {projects.map((n, i) => (
             <Link key={n.id} to={`/notes/${n.frontmatter.slug}`}>
               <div>
+                <GatsbyImage
+                  image={getImage(
+                    projects[i].frontmatter.thumb.childImageSharp
+                  )}
+                  alt={projects[i].frontmatter.slug}
+                />
                 <h3>{n.frontmatter.title}</h3>
                 <p>{n.frontmatter.stack}</p>
               </div>
@@ -33,15 +41,27 @@ export default function Project({ data }) {
 
 export const query = graphql`
   query ProjectPage {
-    projects: allMarkdownRemark(sort: { frontmatter: { date: DESC } }) {
+    projects: allMarkdownRemark {
       nodes {
         frontmatter {
           date
+          title
           slug
           stack
-          title
+          thumb {
+            childImageSharp {
+              gatsbyImageData(
+                aspectRatio: 1.5
+                placeholder: BLURRED
+                blurredOptions: { width: 100 }
+                transformOptions: { cropFocus: CENTER }
+              )
+            }
+          }
+          featuredImg {
+            id
+          }
         }
-        id
       }
     }
     contact: site {
